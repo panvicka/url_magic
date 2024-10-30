@@ -1,21 +1,21 @@
 <script lang="ts">
   import UserInputField from "../lib/components/UserInputField.svelte";
-  import { type userInfoType, type Link } from "../lib/types";
-  import {
-    evaluateEnvironment,
-    evaluateLanguage,
-    evaluateTicketNumber,
-    evaluatePath,
-  } from "../lib/helpers/inputEvaluationHelpers";
+
   import { copy } from "svelte-copy";
 
-  import { linkCreator } from "../lib/helpers/linkCreator";
-  import { isLinkWorking } from "../lib/helpers/isLinkWorking";
   import Footer from "../lib/components/Footer.svelte";
   import Header from "../lib/components/Header.svelte";
   import { queryParam } from "sveltekit-search-params";
   import { onMount } from "svelte";
-  import { add } from "@cm-url-magic/utility";
+  import type { Link, userInfoType } from "@cm-url-magic/utility/dist/types";
+  import {
+    evaluateEnvironment,
+    evaluateLanguage,
+    evaluatePath,
+    evaluateTicketNumber,
+    linkCreator,
+    isLinkWorking,
+  } from "@cm-url-magic/utility";
 
   const mainInputUrlParam = queryParam("mainInput");
   const optionalInputUrlParam = queryParam("secondaryInput");
@@ -37,9 +37,6 @@
   }
 
   onMount(() => {
-    console.log("onMount");
-    console.log(add(4, 5));
-    console.log(add(4, 5));
     if (mainInputUrlParam) {
       mainUserInput = $mainInputUrlParam || "";
     } else {

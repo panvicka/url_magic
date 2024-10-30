@@ -1,5 +1,5 @@
 import { resolve } from "path";
-import { dts } from "rollup-plugin-dts";
+import dts from "vite-plugin-dts";
 import { defineConfig } from "vite";
 
 export default defineConfig({
@@ -12,6 +12,6 @@ export default defineConfig({
       fileName: "utility",
       formats: ["es", "cjs"],
     },
-    plugins: [dts()],
   },
+  plugins: [dts()],
 });
