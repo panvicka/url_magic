@@ -54,7 +54,8 @@ export const evaluateEnvironment = (userInputValue: string) => {
 };
 
 export const evaluateLanguage = (userInputValue: string) => {
-  const regexToMatchLanguage = /(?:\/|^)([a-z]{2}(?:-[a-z]{2})?)(?:\/|$)/;
+  const regexToMatchLanguage =
+    /(?:\/|^)([a-z]{2}(?:-[a-z]{2}|-global)?)(?:\/|$)/;
   const regexToMatchDemoLanguage = /(?:^|\/)(demo-[a-z]{2}-[a-z]{2})(?:\/|$)/;
   let language: string = "";
   let matchedLanguage = userInputValue.match(regexToMatchDemoLanguage);

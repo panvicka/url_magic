@@ -1,26 +1,31 @@
 <script lang="ts">
   import UserInputField from "../lib/components/UserInputField.svelte";
 
-  import { copy } from "svelte-copy";
-
   import Footer from "../lib/components/Footer.svelte";
   import Header from "../lib/components/Header.svelte";
   import { queryParam } from "sveltekit-search-params";
   import { onMount } from "svelte";
-  import type { Link, userInfoType } from "@cm-url-magic/utility/dist/types";
+  import type {
+    Link,
+    userInfoType,
+    GroupedLinks,
+  } from "@cm-url-magic/utility/dist/types";
   import {
     evaluateEnvironment,
     evaluateLanguage,
     evaluatePath,
     evaluateTicketNumber,
     linkCreator,
+    linkCreatorV2,
     isLinkWorking,
   } from "@cm-url-magic/utility";
+  import CopyToClipButton from "$lib/components/CopyToClipButton.svelte";
 
   const mainInputUrlParam = queryParam("mainInput");
   const optionalInputUrlParam = queryParam("secondaryInput");
 
   let links: Link[] = [];
+  let groupedData: GroupedLinks = {};
 
   let userInfo: userInfoType = {};
 
@@ -85,8 +90,30 @@
       userInfo.language,
     );
     userInfo.optionalTicketNumber = evaluateTicketNumber(optionalUserInput);
+    console.log(userInfo);
+    links = linkCreatorV2(userInfo);
+    console.log(links);
 
-    links = linkCreator(userInfo);
+    groupedData = links.reduce((acc, item) => {
+      const groupName = item.group;
+      if (groupName) {
+        if (!acc[groupName]) {
+          acc[groupName] = {
+            group: groupName,
+            links: [],
+          };
+        }
+        acc[groupName].links.push({ name: item.name, href: item.href });
+      }
+      return acc;
+    }, {} as GroupedLinks);
+
+    groupedData = Object.keys(groupedData)
+      .sort()
+      .reduce((acc: GroupedLinks, key) => {
+        acc[key] = groupedData[key];
+        return acc;
+      }, {} as GroupedLinks);
   }
 </script>
 
@@ -116,61 +143,38 @@
     </fieldset>
   </form>
 
-  {#each links as link}
-    <div class="grid">
-      <a href={link.href} target="_blank">{link.name}</a>
-      <small><a href={link.href} target="_blank">{link.href}</a></small>
-      {#await isLinkWorking(link.href)}
-        <span aria-busy="true">Checking link</span>
-      {:then isWorking}
-        <button
-          class="copy-to-clip-button"
-          data-tooltip={`${isWorking ? "Copy link" : "Copy link (link not active)"}`}
-          data-placement="right"
-          use:copy={link.href}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke={`${isWorking ? "currentColor" : "#DC143C"}`}
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"
-            />
-          </svg>
-        </button>
-      {/await}
-    </div>
-    <hr />
-  {/each}
+  <div class="grid">
+    {#each Object.values(groupedData) as group}
+      <div>
+        <h2>{group.group}</h2>
+        {#each group.links as link}
+          <div class="link-wrapper">
+            {#await isLinkWorking(link.href)}
+              <span aria-busy="true"></span>
+            {:then isWorking}
+              <CopyToClipButton link={link.href} {isWorking} />
+            {/await}
+            <a href={link.href} target="_blank">{link.name}</a>
+          </div>
+          <hr />
+        {/each}
+      </div>
+    {/each}
+  </div>
 </main>
 
 <Footer />
 
 <style>
-  button {
-    padding: 0;
-    width: 2rem;
-    height: 2rem;
-    background-color: transparent;
-    border: none;
-    margin-left: 2em;
-  }
-
-  svg:hover {
-    cursor: pointer;
-    color: rgb(1, 170, 255);
-  }
-
   .container {
     padding: 2em 0;
   }
 
-  .grid {
-    align-items: center;
+  a {
+    margin-left: 1rem;
+  }
+  .link-wrapper {
+    display: flex;
+    flex-direction: row;
   }
 </style>
