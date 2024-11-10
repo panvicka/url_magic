@@ -1,15 +1,17 @@
 <script lang="ts">
 	import {
+		Environments,
 		evaluateEnvironment,
 		evaluateLanguage,
 		evaluatePath,
 		evaluateTicketNumber,
 		groupAndSortLinks,
 		linkCreator,
-		type GroupedLinks
+		type GroupedLinks,
+		type Link,
+		type userInfoType
 	} from '@cm-url-magic/utility';
 
-	import { Environments, type Link, type userInfoType } from '@cm-url-magic/utility';
 	import './tailwind.css';
 	import { onMount } from 'svelte';
 	import '@picocss/pico';
@@ -122,7 +124,10 @@
 					/>
 				</fieldset>
 			</form>
-			<h6>Sorry! Not sure what to do with this URL... here some convenient links for you!</h6>
+			<strong
+				>Sorry! Not sure what to do with this URL... here some convenient links for you!</strong
+			>
+			<hr />
 		</div>
 		<div class="custom-grid">
 			{#each Object.values(groupedInterestingLinks) as group}

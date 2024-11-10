@@ -7,6 +7,11 @@ export const interestingLinks: Link[] = [
         href: 'https://preview.ksb-dev.bitgrip.berlin/demo-de-de'
     },
     {
+        group: LinkGroups.mix,
+        name: 'KSB Gitlab MRs',
+        href: 'https://gitlab.oo.bitgrip.berlin/ksb/ksb-website/-/merge_requests'
+    },
+    {
         group: LinkGroups.stage,
         name: 'Stage Prev',
         href: 'https://preview.ksb-stage.bitgrip.berlin/de-de'

@@ -53,8 +53,4 @@
 		flex-direction: row;
 		align-items: center;
 	}
-
-	.grid {
-		align-items: center;
-	}
 </style>
