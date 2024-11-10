@@ -16,7 +16,7 @@
     evaluatePath,
     evaluateTicketNumber,
     linkCreator,
-    linkCreatorV2,
+    groupAndSortLinks,
     isLinkWorking,
   } from "@cm-url-magic/utility";
   import CopyToClipButton from "$lib/components/CopyToClipButton.svelte";
@@ -90,30 +90,9 @@
       userInfo.language,
     );
     userInfo.optionalTicketNumber = evaluateTicketNumber(optionalUserInput);
-    console.log(userInfo);
-    links = linkCreatorV2(userInfo);
-    console.log(links);
+    links = linkCreator(userInfo);
 
-    groupedData = links.reduce((acc, item) => {
-      const groupName = item.group;
-      if (groupName) {
-        if (!acc[groupName]) {
-          acc[groupName] = {
-            group: groupName,
-            links: [],
-          };
-        }
-        acc[groupName].links.push({ name: item.name, href: item.href });
-      }
-      return acc;
-    }, {} as GroupedLinks);
-
-    groupedData = Object.keys(groupedData)
-      .sort()
-      .reduce((acc: GroupedLinks, key) => {
-        acc[key] = groupedData[key];
-        return acc;
-      }, {} as GroupedLinks);
+    groupedData = groupAndSortLinks(links);
   }
 </script>
 

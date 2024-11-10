@@ -44,7 +44,11 @@ export const evaluateEnvironment = (userInputValue: string) => {
     );
   }
 
-  if (userInputValue.includes("bitgrip.atlassian.net/browse")) {
+  if (
+    userInputValue.includes("bitgrip.atlassian.net/browse") ||
+    (userInputValue.includes("bitgrip.atlassian.net/jira") &&
+      userInputValue.includes("&selectedIssue="))
+  ) {
     foundEnvironment = Environment.find(
       (env) => env.name === Environments.JIRA,
     );

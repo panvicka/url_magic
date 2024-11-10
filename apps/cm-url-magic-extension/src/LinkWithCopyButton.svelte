@@ -5,8 +5,7 @@
 	export let link: Link;
 </script>
 
-<div class="grid container-fluid">
-	<a href={link.href} target="_blank" class="contrast">{link.name}</a>
+<div class="container-fluid wrapper">
 	<div class="wrapper">
 		<button use:copy={link.href}>
 			<svg
@@ -23,7 +22,9 @@
 				/>
 			</svg>
 		</button>
-		<a href={link.href} target="_blank">{link.href}</a>
+		<a href={link.href} target="_blank" class="contrast">{link.name}</a>
+
+		<!-- <a href={link.href} target="_blank">{link.href}</a> -->
 	</div>
 </div>
 
@@ -50,6 +51,7 @@
 	.wrapper {
 		display: flex;
 		flex-direction: row;
+		align-items: center;
 	}
 
 	.grid {
