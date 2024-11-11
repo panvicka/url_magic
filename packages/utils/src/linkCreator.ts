@@ -119,6 +119,16 @@ const getDevPath = ({
   ];
 };
 
+const getPlaywrightPath = ({ ticketNumber }: { ticketNumber?: string }) => {
+  return [
+    {
+      group: LinkGroups.mix,
+      name: "Playwright Gitlab Page",
+      href: `https://ksb.pages.oo.bitgrip.berlin/ksb-website/playwright-ksbp-${ticketNumber}`,
+    },
+  ];
+};
+
 const getBranchDeploymentPaths = ({
   ticketNumber,
   language,
@@ -167,6 +177,9 @@ export const linkCreator = (userInfo: userInfoType) => {
       ...links,
       ...getJiraTicketPath({
         ticketNumber: ticketNumber || optionalTicketNumber,
+      }),
+      ...getPlaywrightPath({
+        ticketNumber: useTicketNumber,
       }),
     ];
   }
