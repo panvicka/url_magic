@@ -119,6 +119,7 @@
 						on:change={() => {
 							userInfo.optionalTicketNumber = evaluateTicketNumber(optionalInputUrlParam);
 							links = linkCreator(userInfo); // Update links for the new URL
+							groupedData = groupAndSortLinks(links);
 						}}
 						label="Gimme your ticket number!"
 					/>
@@ -151,6 +152,7 @@
 						on:change={() => {
 							userInfo.optionalTicketNumber = evaluateTicketNumber(optionalInputUrlParam);
 							links = linkCreator(userInfo); // Update links for the new URL
+							groupedData = groupAndSortLinks(links);
 						}}
 						label="Optional ticket number if needed..."
 					/>
