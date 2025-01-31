@@ -47,7 +47,7 @@ export const evaluateEnvironment = (userInputValue: string) => {
   if (
     userInputValue.includes("bitgrip.atlassian.net/browse") ||
     (userInputValue.includes("bitgrip.atlassian.net/jira") &&
-      userInputValue.includes("&selectedIssue="))
+      userInputValue.includes("selectedIssue="))
   ) {
     foundEnvironment = Environment.find(
       (env) => env.name === Environments.JIRA,
@@ -82,6 +82,20 @@ export const evaluateTicketNumber = (userInputValue: string) => {
   );
   if (matchedTicketNumber && matchedTicketNumber[1]) {
     return matchedTicketNumber[1];
+  } else {
+    return undefined;
+  }
+};
+
+// be less strict with the regex if the user enters the number
+export const evaluateTicketNumberFromUserInput = (userInputValue: string) => {
+  // This regex will match 'KSBP-XXXX' and also any standalone sequence of digits
+  const regexToMatchTicketNumbers = /KSBP-(\d+)|(\d+)/i;
+  const matchedTicketNumber = userInputValue.match(regexToMatchTicketNumbers);
+
+  // Check if either capturing group has matched and return the corresponding match
+  if (matchedTicketNumber) {
+    return matchedTicketNumber[1] ?? matchedTicketNumber[2];
   } else {
     return undefined;
   }

@@ -201,6 +201,7 @@ export const linkCreator = (userInfo: userInfoType) => {
     links = [
       ...links,
       ...getStagePath({ language, path }),
+      ...getDevPath({ language, path }),
       ...getLocalHostPath({ language, path }),
     ];
   }

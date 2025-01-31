@@ -2,6 +2,7 @@ export {
   evaluateEnvironment,
   evaluateLanguage,
   evaluateTicketNumber,
+  evaluateTicketNumberFromUserInput,
   evaluatePath,
 } from "./inputEvaluationHelpers";
 export { linkCreator, groupAndSortLinks } from "./linkCreator";

@@ -5,6 +5,7 @@
 		evaluateLanguage,
 		evaluatePath,
 		evaluateTicketNumber,
+		evaluateTicketNumberFromUserInput,
 		groupAndSortLinks,
 		linkCreator,
 		type GroupedLinks,
@@ -52,6 +53,15 @@
 				}
 			}
 		});
+	}
+
+	function updateLinks() {
+		userInfo.optionalTicketNumber = evaluateTicketNumberFromUserInput(optionalInputUrlParam);
+		links = linkCreator(userInfo);
+		groupedData = groupAndSortLinks(links);
+		if (groupedData) {
+			isActive = true;
+		}
 	}
 
 	const isActiveUrlRelevant = () => {
@@ -116,11 +126,7 @@
 				<fieldset>
 					<UserInputField
 						bind:value={optionalInputUrlParam}
-						on:change={() => {
-							userInfo.optionalTicketNumber = evaluateTicketNumber(optionalInputUrlParam);
-							links = linkCreator(userInfo); // Update links for the new URL
-							groupedData = groupAndSortLinks(links);
-						}}
+						on:change={updateLinks}
 						label="Gimme your ticket number!"
 					/>
 				</fieldset>
@@ -149,11 +155,7 @@
 				<fieldset>
 					<UserInputField
 						bind:value={optionalInputUrlParam}
-						on:change={() => {
-							userInfo.optionalTicketNumber = evaluateTicketNumber(optionalInputUrlParam);
-							links = linkCreator(userInfo); // Update links for the new URL
-							groupedData = groupAndSortLinks(links);
-						}}
+						on:change={updateLinks}
 						label="Optional ticket number if needed..."
 					/>
 				</fieldset>
